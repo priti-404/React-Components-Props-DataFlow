@@ -1,0 +1,4 @@
+import {useState} from "react";
+export default function TaskForm({onAddTask}){const [title,setTitle]=useState("");const [category,setCategory]=useState("Study");const [priority,setPriority]=useState("Medium");
+function submit(e){e.preventDefault();if(!title.trim())return;onAddTask({title:title.trim(),category,priority});setTitle("");}
+return <form className="form" onSubmit={submit}><input aria-label="Task title" placeholder="What do you need to get done?" value={title} onChange={e=>setTitle(e.target.value)}/><select value={category} onChange={e=>setCategory(e.target.value)}><option>Study</option><option>Project</option><option>Personal</option></select><select value={priority} onChange={e=>setPriority(e.target.value)}><option>Low</option><option>Medium</option><option>High</option></select><button>Add task +</button></form>}

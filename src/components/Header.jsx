@@ -1,0 +1,1 @@
+export default function Header({userName}){return <header className="top"><a className="brand" href="#"><b>F</b> focusflow</a><span className="avatar">{userName[0]}</span></header>}

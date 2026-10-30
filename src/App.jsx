@@ -1,0 +1,11 @@
+import {useMemo,useState} from "react";
+import Header from "./components/Header.jsx";import StatCard from "./components/StatCard.jsx";import TaskForm from "./components/TaskForm.jsx";import TaskList from "./components/TaskList.jsx";import {initialTasks} from "./data/tasks.js";
+export default function App(){const [tasks,setTasks]=useState(initialTasks);const [filter,setFilter]=useState("All");
+const completed=tasks.filter(t=>t.completed).length;const pending=tasks.length-completed;const shown=useMemo(()=>filter==="Active"?tasks.filter(t=>!t.completed):filter==="Completed"?tasks.filter(t=>t.completed):tasks,[tasks,filter]);
+const addTask=details=>setTasks(old=>[{...details,id:Date.now(),completed:false},...old]);
+const toggleTask=id=>setTasks(old=>old.map(t=>t.id===id?{...t,completed:!t.completed}:t));
+const deleteTask=id=>setTasks(old=>old.filter(t=>t.id!==id));
+return <div className="shell"><Header userName="Priti"/><main><section className="hero"><p>YOUR PERSONAL WORKSPACE</p><h1>Make room for<br/><em>great work.</em></h1><span>Plan your day, keep your focus, celebrate every little win.</span></section>
+<section className="stats"><StatCard label="Total tasks" value={tasks.length} detail="In your workspace"/><StatCard label="To do" value={pending} detail="Keep the momentum"/><StatCard label="Completed" value={completed} detail="Look how far you've come"/></section>
+<section className="panel"><div className="progresshead"><div><small>TODAY'S PROGRESS</small><h2>{tasks.length?Math.round(completed/tasks.length*100):0}% <span>completed</span></h2></div><small>{completed} of {tasks.length} tasks</small></div><div className="track"><div style={{width:`${tasks.length?completed/tasks.length*100:0}%`}}/></div></section>
+<section className="panel tasks"><div className="heading"><div><small>STAY ON TRACK</small><h2>Your tasks</h2></div><nav>{["All","Active","Completed"].map(f=><button className={filter===f?"selected":""} key={f} onClick={()=>setFilter(f)}>{f}</button>)}</nav></div><TaskForm onAddTask={addTask}/><TaskList tasks={shown} onToggle={toggleTask} onDelete={deleteTask}/></section><footer>Made with focus ✦ Powered by React</footer></main></div>}
